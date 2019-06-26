@@ -1,0 +1,14 @@
+{
+  "name": "biggest-sum",
+  "version": "1.0.0",
+  "description": "A function that gets the biggest possible sum from an array of integers",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Chidiebere Onyegbuchulem",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.8.0"
+  }
+}
