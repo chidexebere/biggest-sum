@@ -6,6 +6,11 @@
   "scripts": {
     "test": "jest"
   },
+  "keywords": [
+    "testing",
+    "unit",
+    "jest"
+  ],
   "author": "Chidiebere Onyegbuchulem",
   "license": "ISC",
   "devDependencies": {
