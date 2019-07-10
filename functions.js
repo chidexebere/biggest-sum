@@ -12,7 +12,7 @@ const getPaired = arr => {
 
   for (let i of arr) {
     if (arr.length == 1) {
-      pair.push(arr[arr.length - 1]);
+      pair.push(arr[0]);
       break;
     } else if (arr.length == 2) {
       [a, b, ...arr] = arr;
@@ -63,18 +63,21 @@ const sortOddArrayWithOddNeg = arr => {
   //finds the biggest negative integer in an array and assigns to biggestNegNum
   let biggestNegNum = Math.max(...arr.filter(num => num < 0));
 
-  //checks if the number of negative integers in an array is odd and assigns the truthy value to numsOfNegNumIsOdd
-  let numsOfNegNumIsOdd = arr.filter(num => num < 0).length % 2 !== 0;
+  //checks if the number of negative integers in an array is equal to one and assigns the truthy value to numsOfNegNumIsOne
+  let numsOfNegNumIsOne = arr.filter(num => num < 0).length == 1;
+
+  //checks if the number of zeros in an array is even and assigns the truthy value to evenNumsOfZeros
+  let evenNumsOfZeros = arr.filter(num => num == 0).length % 2 == 0;
 
   let sortArr = [];
 
-  if (numsOfNegNumIsOdd) {
+  if (evenNumsOfZeros && numsOfNegNumIsOne) {
+    sortArr.push(...decendSort(arr));
+  } else {
     sortArr.push(smallestPosNum, biggestNegNum);
     arr.splice(arr.indexOf(smallestPosNum), 1);
     arr.splice(arr.indexOf(biggestNegNum), 1);
     sortArr.push(...sortOddArrayWithEvenNeg(arr));
-  } else {
-    sortArr = sortOddArrayWithEvenNeg(arr);
   }
   return sortArr;
 };
@@ -95,6 +98,7 @@ function biggestSum(arr) {
     let containsAllintegers =
       arr.some(num => num < 0) && arr.some(num => num >= 0);
     let isArrayOdd = arr.length % 2 !== 0;
+    let numsOfNegNumIsOdd = arr.filter(num => num < 0).length % 2 !== 0;
 
     if (containsNonIntegers) {
       throw new Error("Your array should contain only integers");
@@ -104,7 +108,7 @@ function biggestSum(arr) {
       } else if (allPosInt) {
         sortedArr = decendSort(arr);
       } else if (containsAllintegers) {
-        isArrayOdd
+        isArrayOdd && numsOfNegNumIsOdd
           ? (sortedArr = sortOddArrayWithOddNeg(arr))
           : (sortedArr = sortOddArrayWithEvenNeg(arr));
       }

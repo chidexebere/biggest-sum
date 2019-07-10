@@ -31,6 +31,10 @@ describe("Biggest Possible Sum Test Cases", () => {
     expect(biggestSum([1, 1])).toBe(2);
   });
 
+  test("[-1, 0, 10, 0, -1, 8, -5] should return 85", () => {
+    expect(biggestSum([-1, 0, 10, 0, -1, 8, -5])).toBe(85);
+  });
+
   test("[-2, -3, -1, -4, -5] should return 25", () => {
     expect(biggestSum([-2, -3, -1, -4, -5])).toBe(25);
   });
@@ -61,5 +65,9 @@ describe("Biggest Possible Sum Test Cases", () => {
 
   test("[0] should return 0", () => {
     expect(biggestSum([0])).toBe(0);
+  });
+
+  test("[9, 9, 9, 2, -2] should return 97", () => {
+    expect(biggestSum([9, 9, 9, 2, -2])).toBe(97);
   });
 });
