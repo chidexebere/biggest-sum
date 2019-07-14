@@ -6,7 +6,7 @@ const decendSort = arr => arr.sort((m, n) => n - m);
 
 /* This functions pair numbers in an array: 
 if the number of integers left in the array after pariing is two; it returns them singely;
-/* if one it return the last interger */
+/* if one it returns that interger */
 const getPaired = arr => {
   let pair = [];
 
@@ -34,50 +34,178 @@ const sumOfPairs = arr => {
   );
 };
 
+// A function that returns  the all negative integers in an array
+const negNums = arr => arr.filter(num => num < 0);
+
+//A function that returns all positive integers aside zero in an array
+const posNums = arr => arr.filter(num => num > 0);
+
+//A function that returns all zeros in an array
+const zeroNums = arr => arr.filter(num => num == 0);
+
+// A function that checks if the array conatains zero and returns a truthy value
+const containsZero = arr => arr.some(num => num == 0);
+
+// A function that checks if the number of zeros in an array is even and returns a truthy value
+const evenNumsOfZeros = arr => arr.filter(num => num == 0).length % 2 == 0;
+
+//A function that returns the biggest negative integer in an array
+const biggestNegNum = arr => Math.max(...arr.filter(num => num < 0));
+
+//A function that returns the smallest positive integer in an array
+const smallestPosNum = arr => Math.min(...arr.filter(num => num > 0));
+
+// A function that returns the sum of two integers in an array
+const sum = arr => {
+  return arr.reduce((acc, cur) => acc + cur, 0);
+};
+
+// A function that returns the biggest sum of integers in an array, after paring but without sorting
+const biggest = arr => {
+  const paired = getPaired(arr);
+  return sumOfPairs(paired);
+};
+
+// A function that gets the best way to sort an array of four integers to get the biggest sum
+const sortFor4 = arr => {
+  let sortArr = [];
+  let firstArr = biggest(ascendSort(arr));
+  let secondArr = biggest(decendSort(arr));
+  firstArr > secondArr
+    ? sortArr.push(...ascendSort(arr))
+    : sortArr.push(...decendSort(arr));
+
+  return sortArr;
+};
+
+//A function that returns the last two integers in an array
+const remove2 = arr => {
+  let removed = [];
+  removed.push(arr.pop());
+  removed.push(arr.pop());
+  return removed;
+};
+
+//A function that sorts in this order : negatives, positives.
+const sortNegPos = arr => {
+  let sortArr = [];
+  sortArr.push(...ascendSort(negNums(arr)));
+  sortArr.push(...decendSort(posNums(arr)));
+  return sortArr;
+};
+
+//A function that sorts in this order : negatives, positives and zeros
+const sortNegPosZero = arr => {
+  let sortArr = [];
+  sortArr.push(...ascendSort(negNums(arr)));
+  sortArr.push(...decendSort(posNums(arr)));
+  sortArr.push(...zeroNums(arr));
+  return sortArr;
+};
+
+//A function that sorts in this order : positives, negatives.
+const sortPosNeg = arr => {
+  let sortArr = [];
+  sortArr.push(...decendSort(posNums(arr)));
+  sortArr.push(...ascendSort(negNums(arr)));
+  return sortArr;
+};
+
+//A function that sorts in this order : positives, negatives and zeros
+const sortPosNegZero = arr => {
+  let sortArr = [];
+  sortArr.push(...decendSort(posNums(arr)));
+  sortArr.push(...ascendSort(negNums(arr)));
+  sortArr.push(...zeroNums(arr));
+  return sortArr;
+};
+
 /*This function sorts an array if its number of integers is even * */
 const sortOddArrayWithEvenNeg = arr => {
-  //gets the all negative integers in an array and assigns to negNums
-  let negNums = arr.filter(num => num < 0);
+  let sortArr = [];
 
-  //sort negNums in ascending order and assigns to sortedNegNums
-  let sortedNegNums = ascendSort(negNums);
-
-  //gets the all positive integers in an array and assigns to posNums
-  let posNums = arr.filter(num => num >= 0);
-
-  //checks if the number of zeros in an array is even and assigns the truthy value to evenNumsOfZeros
-  let evenNumsOfZeros = posNums.filter(num => num == 0).length % 2 == 0;
-
-  let sorted = [];
-  sorted.push(...sortedNegNums);
-  sortedPosNums = evenNumsOfZeros ? ascendSort(posNums) : decendSort(posNums);
-  sorted.push(...sortedPosNums);
-  return sorted;
+  if (!containsZero(arr)) {
+    sortArr.push(...sortNegPos(arr));
+  } else {
+    evenNumsOfZeros(arr)
+      ? sortArr.push(
+          ...ascendSort(negNums(arr)),
+          ...zeroNums(arr),
+          ...decendSort(posNums(arr))
+        )
+      : sortArr.push(...sortNegPosZero(arr));
+  }
+  return sortArr;
 };
 
 /* This function sorts an array if its number of integers is odd */
 const sortOddArrayWithOddNeg = arr => {
-  //finds the smallest positive integer in an array and assigns to smallestPosNum
-  let smallestPosNum = Math.min(...arr.filter(num => num >= 0));
-
-  //finds the biggest negative integer in an array and assigns to biggestNegNum
-  let biggestNegNum = Math.max(...arr.filter(num => num < 0));
-
-  //checks if the number of negative integers in an array is equal to one and assigns the truthy value to numsOfNegNumIsOne
-  let numsOfNegNumIsOne = arr.filter(num => num < 0).length == 1;
-
-  //checks if the number of zeros in an array is even and assigns the truthy value to evenNumsOfZeros
-  let evenNumsOfZeros = arr.filter(num => num == 0).length % 2 == 0;
-
   let sortArr = [];
+  let biggestNeg = biggestNegNum(arr);
+  let smallestPos = smallestPosNum(arr);
 
-  if (evenNumsOfZeros && numsOfNegNumIsOne) {
-    sortArr.push(...decendSort(arr));
+  if (!containsZero(arr)) {
+    arr.splice(arr.indexOf(biggestNeg), 1);
+    sortArr.push(...sortNegPos(arr), biggestNeg);
   } else {
-    sortArr.push(smallestPosNum, biggestNegNum);
-    arr.splice(arr.indexOf(smallestPosNum), 1);
-    arr.splice(arr.indexOf(biggestNegNum), 1);
-    sortArr.push(...sortOddArrayWithEvenNeg(arr));
+    if (evenNumsOfZeros(arr)) {
+      sortArr.push(...sortPosNegZero(arr));
+    } else {
+      arr.splice(arr.indexOf(smallestPos), 1);
+      sortArr.push(...sortPosNegZero(arr), smallestPos);
+    }
+  }
+  return sortArr;
+};
+
+const sortEvenArrayWithEvenNeg = arr => {
+  let sortArr = [];
+  let smallestPos = smallestPosNum(arr);
+
+  if (!containsZero(arr)) {
+    if (arr.length == 4) {
+      sortArr.push(...sortFor4(arr));
+    } else {
+      let last4 = [];
+      neg = ascendSort(negNums(arr));
+      last2Neg = remove2(neg);
+      pos = decendSort(posNums(arr));
+      last2Pos = remove2(pos);
+      last4.push(...last2Neg, ...last2Pos);
+      sortedLast4 = sortFor4(last4);
+      sortArr.push(...neg, ...pos, ...sortedLast4);
+    }
+  } else {
+    if (evenNumsOfZeros(arr)) {
+      sortArr.push(...sortNegPosZero(arr));
+    } else {
+      arr.splice(arr.indexOf(smallestPos), 1);
+      sortArr.push(...sortPosNegZero(arr), smallestPos);
+    }
+  }
+  return sortArr;
+};
+
+/* This function sorts an array if its number of integers is odd */
+const sortEvenArrayWithOddNeg = arr => {
+  let sortArr = [];
+  let biggestNeg = biggestNegNum(arr);
+  let smallestPos = smallestPosNum(arr);
+
+  if (!containsZero(arr)) {
+    arr.splice(arr.indexOf(biggestNeg), 1);
+    sortArr.push(...sortNegPos(arr), biggestNeg);
+  } else {
+    if (evenNumsOfZeros(arr)) {
+      arr.splice(arr.indexOf(smallestPos), 1);
+      arr.splice(arr.indexOf(biggestNeg), 1);
+      arr.splice(arr.indexOf(0), 1);
+      sortArr.push(biggestNeg, 0, ...sortPosNegZero(arr), smallestPos);
+    } else {
+      arr.splice(arr.indexOf(biggestNeg), 1);
+      arr.splice(arr.indexOf(0), 1);
+      sortArr.push(biggestNeg, 0, ...sortNegPosZero(arr));
+    }
   }
   return sortArr;
 };
@@ -95,8 +223,6 @@ function biggestSum(arr) {
     let containsNonIntegers = arr
       .map(num => !Number.isInteger(num))
       .includes(true);
-    let containsAllintegers =
-      arr.some(num => num < 0) && arr.some(num => num >= 0);
     let isArrayOdd = arr.length % 2 !== 0;
     let numsOfNegNumIsOdd = arr.filter(num => num < 0).length % 2 !== 0;
 
@@ -107,10 +233,16 @@ function biggestSum(arr) {
         sortedArr = ascendSort(arr);
       } else if (allPosInt) {
         sortedArr = decendSort(arr);
-      } else if (containsAllintegers) {
-        isArrayOdd && numsOfNegNumIsOdd
-          ? (sortedArr = sortOddArrayWithOddNeg(arr))
-          : (sortedArr = sortOddArrayWithEvenNeg(arr));
+      } else {
+        if (isArrayOdd) {
+          numsOfNegNumIsOdd
+            ? (sortedArr = sortOddArrayWithOddNeg(arr))
+            : (sortedArr = sortOddArrayWithEvenNeg(arr));
+        } else {
+          numsOfNegNumIsOdd
+            ? (sortedArr = sortEvenArrayWithOddNeg(arr))
+            : (sortedArr = sortEvenArrayWithEvenNeg(arr));
+        }
       }
       const paired = getPaired(sortedArr);
       return sumOfPairs(paired);
