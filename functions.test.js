@@ -37,7 +37,7 @@ describe("Biggest Possible Sum Test Cases", () => {
     });
 
     describe("Positive Integers: Even arrays, Odd array but with odd no of zeros", () => {
-      test("[0, 1, 2, 3, 4, 5] should return 26", () => {
+      test("[0, 0, 2, 3, 4, 5] should return 26", () => {
         expect(biggestSum([0, 0, 2, 3, 4, 5])).toBe(26);
       });
 
@@ -106,6 +106,10 @@ describe("Biggest Possible Sum Test Cases", () => {
 
     test("[-4, -3, -1, 100, 0] should return 112", () => {
       expect(biggestSum([-4, -3, -1, 100, 0])).toBe(112);
+    });
+
+    test("[-2, -2, -1, 0, 0, 10, 0] should return 14", () => {
+      expect(biggestSum([-2, -2, -1, 0, 0, 10, 0])).toBe(14);
     });
   });
 
