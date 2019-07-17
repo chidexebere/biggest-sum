@@ -55,6 +55,9 @@ const biggestNegNum = arr => Math.max(...arr.filter(num => num < 0));
 //A function that returns the smallest positive integer in an array
 const smallestPosNum = arr => Math.min(...arr.filter(num => num > 0));
 
+//A function that returns a truthy value if the integers in an array is odd
+const isArrayOdd = arr => arr.length % 2 !== 0;
+
 // A function that returns the sum of two integers in an array
 const sum = arr => {
   return arr.reduce((acc, cur) => acc + cur, 0);
@@ -210,6 +213,15 @@ const sortEvenArrayWithOddNeg = arr => {
   return sortArr;
 };
 
+/* This function sorts an odd array with positive integers and contain even number of zeros */
+const sortPosOddArrayWithOddZeros = arr => {
+  let sortArr = [];
+  let smallestPos = smallestPosNum(arr);
+  arr.splice(arr.indexOf(smallestPos), 1);
+  sortArr.push(...decendSort(arr), smallestPos);
+  return sortArr;
+};
+
 /* The main function that returns the biggest possible sum from the input array */
 function biggestSum(arr) {
   //checks if the input is an array and assigns the truthy value to listNotAnArray
@@ -223,7 +235,7 @@ function biggestSum(arr) {
     let containsNonIntegers = arr
       .map(num => !Number.isInteger(num))
       .includes(true);
-    let isArrayOdd = arr.length % 2 !== 0;
+
     let numsOfNegNumIsOdd = arr.filter(num => num < 0).length % 2 !== 0;
 
     if (containsNonIntegers) {
@@ -232,9 +244,11 @@ function biggestSum(arr) {
       if (allNegInt) {
         sortedArr = ascendSort(arr);
       } else if (allPosInt) {
-        sortedArr = decendSort(arr);
+        isArrayOdd(arr) && evenNumsOfZeros(arr)
+          ? (sortedArr = sortPosOddArrayWithOddZeros(arr))
+          : (sortedArr = decendSort(arr));
       } else {
-        if (isArrayOdd) {
+        if (isArrayOdd(arr)) {
           numsOfNegNumIsOdd
             ? (sortedArr = sortOddArrayWithOddNeg(arr))
             : (sortedArr = sortOddArrayWithEvenNeg(arr));

@@ -22,15 +22,40 @@ describe("Checking Errors", () => {
 
 describe("Biggest Possible Sum Test Cases", () => {
   describe("If all integers in the array are positive", () => {
-    test("[0, 1, 2, 3, 4, 5] should return 27", () => {
-      expect(biggestSum([0, 1, 2, 3, 4, 5])).toBe(27);
+    describe("Positive Integers: Odd array with even no of zeros", () => {
+      test("[1, 0, 0] should return 1", () => {
+        expect(biggestSum([1, 0, 0])).toBe(1);
+      });
+
+      test("[3, 2, 1, 0, 0] should return 7", () => {
+        expect(biggestSum([3, 2, 1, 0, 0])).toBe(7);
+      });
+
+      test("[100, 0, 0, 0, 0] should return 100", () => {
+        expect(biggestSum([100, 0, 0, 0, 0])).toBe(100);
+      });
     });
 
-    test("[1, 1] should return 2", () => {
-      expect(biggestSum([1, 1])).toBe(2);
-    });
-    test("[0] should return 0", () => {
-      expect(biggestSum([0])).toBe(0);
+    describe("Positive Integers: Even arrays, Odd array but with odd no of zeros", () => {
+      test("[0, 1, 2, 3, 4, 5] should return 26", () => {
+        expect(biggestSum([0, 0, 2, 3, 4, 5])).toBe(26);
+      });
+
+      test("[6, 1, 2, 3, 4, 5, 1] should return 45", () => {
+        expect(biggestSum([6, 1, 2, 3, 4, 5, 1])).toBe(45);
+      });
+
+      test("[1, 1] should return 2", () => {
+        expect(biggestSum([1, 1])).toBe(2);
+      });
+
+      test("[1, 0] should return 1", () => {
+        expect(biggestSum([1, 0])).toBe(1);
+      });
+
+      test("[0] should return 0", () => {
+        expect(biggestSum([0])).toBe(0);
+      });
     });
   });
 
